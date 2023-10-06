@@ -1,5 +1,0 @@
-I had some devices not migrated to Intune from SCCM for Co-Management, there was Compliance status "See ConfigMgr" 
-Workloads not transferred into Intune, devices are scattered all over the world, so decided to push some fixes from intune. 
-Tried Remediation Scripts, but "Ccmsetup /uninstall" not cleaning all the trash. CCMclean.exe( https://www.anoopcnair.com/sccm-client-uninstall-remove-using-ccmclean-exe/)  does it better, but I can't push it via Remediation (you can try Invoke-WebRequest to download file and work with it in remediation - I don't want such practise)
-I decided to create intunewin file, where placed install script, detection script and ccmclean.exe and deploy it via intune. 
-Here is my code
