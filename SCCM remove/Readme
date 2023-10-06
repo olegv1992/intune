@@ -6,3 +6,6 @@ Tried Remediation Scripts and it works:
 It uninstall sccm using setup file and key "/uninstall",  removes CCM folders, registry keys and WMIs, set registry for autoenroll using USER CREDENTIALS, runs deviceenroller actions
 
 Deploy remediation to needed group * WARNING! Do it step by step, do not assing to all! * 
+
+
+Also have idea to Wrap script + CCMclean.exe to intunewin file and deploy it like app, you can check install.ps1 how I propose to do it
