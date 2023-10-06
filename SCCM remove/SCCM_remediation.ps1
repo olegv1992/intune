@@ -6,7 +6,7 @@ Stop-Service -Name smstsmgr -Force -ErrorAction SilentlyContinue
 Stop-Service -Name CmRcService -Force -ErrorAction SilentlyContinue
 
 # Uninstall SCCM
-c:\windows\ccmsetup\ccmsetup.exe /uninstall
+$env:WinDir\ccmsetup\ccmsetup.exe /uninstall
 # Remove WMI Namespaces
 Get-WmiObject -Query "SELECT * FROM __Namespace WHERE Name='ccm'" -Namespace root | Remove-WmiObject -ErrorAction SilentlyContinue
 Get-WmiObject -Query "SELECT * FROM __Namespace WHERE Name='sms'" -Namespace root\cimv2 | Remove-WmiObject -ErrorAction SilentlyContinue
@@ -34,7 +34,9 @@ Remove-Item -Path $MyPath\SMS*.mif -Force -ErrorAction SilentlyContinue
 
 
 # Set registry to AutoEnroll by UserCredentials to intune
-cmd /c 'REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\MDM" /v AutoEnrollMDM /t REG_DWORD /d 1 /f' 
-cmd /c 'REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\MDM" /v UseAADCredentialType /t REG_DWORD /d 1 /f' 
-# Run AutoEnroll
-c:\windows\system32\deviceenroller.exe /c /AutoEnrollMDM
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\MDM" -Name AutoEnrollMDM -Value 1 -Type DWord -Force
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CurrentVersion\MDM" -Name UseAADCredentialType -Value 1 -Type DWord -Force
+
+#run deviceenroller task
+$DVenr = "$env:WinDir\system32\deviceenroller.exe"
+Start-Process -FilePath $DVenr  -ArgumentList "/c /AutoEnrollMDM"
