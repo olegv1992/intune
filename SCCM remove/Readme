@@ -2,7 +2,7 @@ I had some devices not migrated to Intune from SCCM for Co-Management, there was
 Workloads not transferred into Intune, devices are scattered all over the world, so decided to push some fixes from intune. 
 Tried Remediation Scripts and it works:
 # SCCM_Detection.ps1 - detection of intalled SCCM client
-# SCCM_Remediate.ps1 - main install script
+# SCCM_Remediation.ps1 - main install script
 It uninstall sccm using setup file and key "/uninstall",  removes CCM folders, registry keys and WMIs, set registry for autoenroll using USER CREDENTIALS, runs deviceenroller actions
 
 Deploy remediation to needed group * WARNING! Do it step by step, do not assing to all! * 
