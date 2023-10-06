@@ -3,3 +3,23 @@ Workloads not transferred into Intune, devices are scattered all over the world,
 Tried Remediation Scripts, but "Ccmsetup /uninstall" not cleaning all the trash. CCMclean.exe( https://www.anoopcnair.com/sccm-client-uninstall-remove-using-ccmclean-exe/)  does it better, but I can't push it via Remediation (you can try Invoke-WebRequest to download file and work with it in remediation - I don't want such practise)
 I decided to create intunewin file, where placed install script, detection script and ccmclean.exe and deploy it via intune. 
 Here is my code
+# Install.ps1 - main install script
+It uninstall sccm using setup file and key "/uninstall", run ccmclean in silent mode, removes CCM folders/and registry keys, set registry for autoenroll using USER CREDENTIALS, runs deviceenroller actions
+# Detection.ps1 - detection of "intalled app"
+# ccmclean.exe - just file from old ccmsetup (you can another one, this one still works) 
+
+So, we have to create intunewin file and deploy it using intune
+https://github.com/microsoft/Microsoft-Win32-Content-Prep-Tool  intune win download page
+https://learn.microsoft.com/en-us/mem/intune/apps/apps-win32-prepare - Wrapper documentation
+
+Place 3 files in some folder, e.g. C:intunewin\input and create some output folder, e.g. c:\intunewin\output
+run IntuneWinAppUtil.exe 
+source folder: $input
+setup file: ccmclean.exe
+output folder: $output
+catalog folder: n
+
+Deploy app to needed group * WARNING! Do it step by step, do not assing to all! * 
+Use custom detection script as detection of the app
+install command " powershell.exe -executionpolicy Bypass .\Install.ps1 " 
+uninstall command " del /f "$env.WinDir\ccm_removed.txt "
